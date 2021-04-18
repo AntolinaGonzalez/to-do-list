@@ -3,7 +3,6 @@ import {
   createStyles,
   makeStyles,
   Theme,
-  withStyles,
 } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import FormGroup from "@material-ui/core/FormGroup";
@@ -17,10 +16,13 @@ import DeleteDialog from "./deleteDialog";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     task: {
-      padding: 8,
+      padding: 2,
       display: "flex",
       justifyContent: "space-between",
       borderLeft: "solid",
+      '& .MuiFormControlLabel-root':{
+        marginLeft: 10,
+      }
     },
   })
 );
@@ -112,11 +114,11 @@ const SimpleTask: React.FC<Props> = ({ id, title, priority, checked }) => {
         open={openEditDialog}
         onClose={() => setOpenEditDialog(false)}
       />
-      <DeleteDialog
+      {/* <DeleteDialog
         type="task"
         open={openDeleteDialog}
         onClose={() => setOpenDeleteDialog(false)}
-      />
+      /> */}
     </>
   );
 };
