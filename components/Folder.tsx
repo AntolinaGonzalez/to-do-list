@@ -7,28 +7,26 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SimpleTask from "./SimpleTask";
 import { Box, Menu, MenuItem } from "@material-ui/core";
-import { Task } from "../models/task";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import FolderDialog from "./FolderDialog";
 import DeleteDialog from "./deleteDialog";
 import TaskDialog from "./TaskDialog";
 import { Folder } from "../models/folder";
+import { User } from "../models/user";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     borderCard: {
       borderTop: "solid orange",
-      "& .MuiTypography-body2": {
-        fontSize: 20,
-      },
     },
   })
 );
 interface Props {
   initialData: Folder;
+  user: User;
 }
 
-const FolderComponent: React.FC<Props> = ({ initialData }) => {
+const FolderComponent: React.FC<Props> = ({ initialData, user }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openFolderDialog, setOpenFolderDialog] = useState(false);
@@ -41,12 +39,13 @@ const FolderComponent: React.FC<Props> = ({ initialData }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  console.log("la data", initialData);
+
+  console.log("esto llega", initialData);
   return (
     <>
       <Card className={classes.borderCard}>
         <CardHeader
-          avatar={<FolderOpenIcon color="primary" fontSize="large" />}
+          avatar={<FolderOpenIcon color="primary" />}
           action={
             <IconButton aria-label="settings" onClick={handleClick}>
               <MoreVertIcon />
@@ -55,7 +54,7 @@ const FolderComponent: React.FC<Props> = ({ initialData }) => {
           title={initialData.name}
         />
         <CardContent>
-          {initialData.tasks.map(({ id, title, priority, checked }) => (
+          {initialData.tasks && initialData.tasks.map(({ id, title, priority, checked }) => (
             <Box key={id} m={1}>
               <SimpleTask
                 id={id}
@@ -100,6 +99,7 @@ const FolderComponent: React.FC<Props> = ({ initialData }) => {
         </MenuItem>
       </Menu>
       <FolderDialog
+        user={user}
         initialData={initialData}
         open={openFolderDialog}
         onClose={() => setOpenFolderDialog(false)}
