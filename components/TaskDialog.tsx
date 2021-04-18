@@ -82,7 +82,7 @@ const TaskDialog: React.FC<Props> = ({
         <DialogTitle id="form-dialog-title">New Task</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Describe your task to added to your to do list
+            Describe your task to add it to your to do list
           </DialogContentText>
           <TextField
             required

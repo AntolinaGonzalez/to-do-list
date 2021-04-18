@@ -233,8 +233,8 @@ export default function NavBar() {
         <div className={classes.drawerHeader} />
         <Typography paragraph>To Do List APP</Typography>
         <Typography paragraph>
-          You can organice your rutine in a folder. If you do not have a folder
-          your task will be in 'General' Folder
+          You can organise your things to do in a folder. If you do not have a folder
+          your tasks will be in the 'General' Folder.
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
