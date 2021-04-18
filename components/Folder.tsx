@@ -54,16 +54,17 @@ const FolderComponent: React.FC<Props> = ({ initialData, user }) => {
           title={initialData.name}
         />
         <CardContent>
-          {initialData.tasks && initialData.tasks.map(({ id, title, priority, checked }) => (
-            <Box key={id} m={1}>
-              <SimpleTask
-                id={id}
-                title={title}
-                priority={priority}
-                checked={checked}
-              />
-            </Box>
-          ))}
+          {initialData.tasks &&
+            initialData.tasks.map(({ id, title, priority, checked }) => (
+              <Box key={id} m={1}>
+                <SimpleTask
+                  id={id}
+                  title={title}
+                  priority={priority}
+                  checked={checked}
+                />
+              </Box>
+            ))}
         </CardContent>
       </Card>
       <Menu
@@ -73,30 +74,43 @@ const FolderComponent: React.FC<Props> = ({ initialData, user }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem
-          onClick={() => {
-            setOpenFolderDialog(true);
-            handleClose();
-          }}
-        >
-          Edit Folder
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            setDeleteDialog(true);
-            handleClose();
-          }}
-        >
-          Delete Folder
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            setOpenTaskDialog(true);
-            handleClose();
-          }}
-        >
-          Add task
-        </MenuItem>
+        {initialData.name === "General" ? (
+          <MenuItem
+            onClick={() => {
+              setOpenTaskDialog(true);
+              handleClose();
+            }}
+          >
+            Add task
+          </MenuItem>
+        ) : (
+          <>
+            <MenuItem
+              onClick={() => {
+                setOpenFolderDialog(true);
+                handleClose();
+              }}
+            >
+              Edit Folder
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setDeleteDialog(true);
+                handleClose();
+              }}
+            >
+              Delete Folder
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setOpenTaskDialog(true);
+                handleClose();
+              }}
+            >
+              Add task
+            </MenuItem>
+          </>
+        )}
       </Menu>
       <FolderDialog
         user={user}
@@ -105,6 +119,8 @@ const FolderComponent: React.FC<Props> = ({ initialData, user }) => {
         onClose={() => setOpenFolderDialog(false)}
       />
       <DeleteDialog
+        initialData={initialData}
+        user={user}
         type="folder"
         open={openDeleteDialog}
         onClose={() => setDeleteDialog(false)}

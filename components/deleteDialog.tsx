@@ -7,6 +7,9 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
+import { useFolderForm } from "../hooks/useFolder";
+import { User } from "../models/user";
+import { Folder } from "../models/folder";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
@@ -18,8 +21,17 @@ interface Props {
   type: string;
   open: boolean;
   onClose(): void;
+  initialData: Folder;
+  user: User;
 }
-const DeleteDialog: React.FC<Props> = ({ open, onClose, type }) => {
+const DeleteDialog: React.FC<Props> = ({
+  type,
+  open,
+  onClose,
+  initialData,
+  user,
+}) => {
+  const { onDelete } = useFolderForm({initialData, user, handleClose: onClose});
   return (
     <div>
       <Dialog
@@ -41,7 +53,7 @@ const DeleteDialog: React.FC<Props> = ({ open, onClose, type }) => {
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={onClose} color="primary">
+          <Button onClick={onDelete} color="primary">
             Confirm
           </Button>
         </DialogActions>
