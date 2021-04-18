@@ -20,12 +20,16 @@ export const useFetchData = () => {
         tasks: dataTask && dataTask.filter((t) => t.folder === f.id),
       });
     });
+  const { data: generalTask, error: generalTaskError } = useSWR(
+    `${process.env.api}/tasks/folder/0`,
+    fetcher
+  );
   return {
     user: data,
     generalTask: {
       id: 0,
       name: "General",
-      tasks: dataTask && dataTask.filter((t) => t.folder === 0),
+      tasks: generalTask,
     },
     folders: FolderTasks,
   };

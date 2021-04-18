@@ -9,7 +9,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { Folder } from "../models/folder";
 import { useFolderForm } from "../hooks/useFolder";
 import { User } from "../models/user";
-import { useForm } from "react-hook-form";
 
 interface Props {
   user: User;
@@ -28,14 +27,9 @@ const FolderDialog: React.FC<Props> = ({
      user,
      handleClose: onClose,
    });
-  // const {register, handleSubmit} = useForm({defaultValues: initialData})
-  // const onSubmit = (data, e)=>{
-  //   console.log(data)
-  // }
+  
   const { ref, ...rest } = register('name')
-  console.log('llega al form', initialData)
   return (
-    
       <Dialog
         open={open}
         onClose={onClose}

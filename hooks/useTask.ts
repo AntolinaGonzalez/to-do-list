@@ -1,44 +1,47 @@
-import { User } from "./../models/user";
 import { Folder } from "./../models/folder";
+import { User } from "./../models/user";
 import { useCallback } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import axios from "axios";
 import { mutate } from "swr";
+import { Task } from "../models/task";
 
-export interface FolderValuesForm {
-  name: string;
+export interface TaskValuesForm {
+  title: string;
+  priority: string;
   user: number;
+  folder?: number;
 }
-const schema = yup.object().shape({
-  name: yup.string().required(),
-  user: yup.number().nullable(),
-});
-export const useFolderForm = ({
+
+export const useTaskForm = ({
   initialData,
   user,
+  folder,
   handleClose,
 }: {
-  initialData: Folder;
+  initialData: Task;
   user: User;
+  folder: number;
   handleClose: () => void;
 }) => {
-  const hookform = useForm<FolderValuesForm>({
+  const hookform = useForm<TaskValuesForm>({
     defaultValues: initialData,
     mode: "onBlur",
-    resolver: yupResolver(schema),
   });
+
   const onSubmit = useCallback(
     async (data) => {
       try {
-
-        await axios.post(`${process.env.api}/folder`, {
+        await axios.post(`${process.env.api}/task`, {
           ...data,
+          priority: initialData.priority,
           user: user.id,
+          folder: folder,
         });
-        mutate(`${process.env.api}/folders/11`);
         handleClose();
+        mutate(`${process.env.api}/tasks/folder/0`)
       } catch (e) {
         console.log(e);
       }
@@ -49,8 +52,9 @@ export const useFolderForm = ({
 
   const onDelete = useCallback(async () => {
     try {
-      await axios.delete(`${process.env.api}/folder/${initialData.id}`);
-      mutate(`${process.env.api}/folders/11`);
+      await axios.delete(`${process.env.api}/task/${initialData.id}`);
+      mutate(`${process.env.api}/tasks/folder/0`)
+      handleClose()
     } catch (e) {
       console.log(e);
     }
@@ -58,6 +62,7 @@ export const useFolderForm = ({
   return {
     ...hookform,
     submitHandler,
+    onSubmit,
     onDelete,
   };
 };

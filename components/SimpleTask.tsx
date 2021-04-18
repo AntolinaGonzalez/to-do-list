@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-import {
-  createStyles,
-  makeStyles,
-  Theme,
-} from "@material-ui/core/styles";
-import { green } from "@material-ui/core/colors";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 import { IconButton, Menu, MenuItem, Paper } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TaskDialog from "./TaskDialog";
-import DeleteDialog from "./deleteDialog";
+import { Task } from "../models/task";
+import { User } from "../models/user";
+import DeleteTaskDialog from "./deleteTask";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,20 +17,19 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       justifyContent: "space-between",
       borderLeft: "solid",
-      '& .MuiFormControlLabel-root':{
+      "& .MuiFormControlLabel-root": {
         marginLeft: 10,
-      }
+      },
     },
   })
 );
 interface Props {
-  id: string;
-  title: string;
-  priority: string;
-  checked: boolean;
+  user: User;
+  folder: number;
+  initialData: Task;
 }
 
-const SimpleTask: React.FC<Props> = ({ id, title, priority, checked }) => {
+const SimpleTask: React.FC<Props> = ({ user, folder, initialData }) => {
   const classes = useStyles();
   const [state, setState] = React.useState({
     checkedA: true,
@@ -52,7 +48,7 @@ const SimpleTask: React.FC<Props> = ({ id, title, priority, checked }) => {
     setAnchorEl(event.currentTarget);
   };
   let borderColor;
-  switch (priority) {
+  switch (initialData.priority) {
     case "low":
       borderColor = "lightgreen";
       break;
@@ -73,13 +69,13 @@ const SimpleTask: React.FC<Props> = ({ id, title, priority, checked }) => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={state.checkedB}
+                checked={initialData.checked}
                 onChange={handleChange}
                 name="checkedB"
                 color="primary"
               />
             }
-            label={title}
+            label={initialData.title}
           />
         </FormGroup>
         <IconButton aria-label="settings" onClick={handleClick}>
@@ -111,14 +107,20 @@ const SimpleTask: React.FC<Props> = ({ id, title, priority, checked }) => {
         </MenuItem>
       </Menu>
       <TaskDialog
+        initialData={initialData}
+        user={user}
+        folder={initialData.folder}
         open={openEditDialog}
         onClose={() => setOpenEditDialog(false)}
       />
-      {/* <DeleteDialog
+      <DeleteTaskDialog
+        initialData={initialData}
+        user={user}
+        folder={initialData.folder}
         type="task"
         open={openDeleteDialog}
         onClose={() => setOpenDeleteDialog(false)}
-      /> */}
+      />
     </>
   );
 };

@@ -31,6 +31,7 @@ import FolderDialog from "../components/FolderDialog";
 import TaskDialog from "../components/TaskDialog";
 import Login from "../components/Login";
 import { useFetchData } from "../hooks/ToDoList";
+import { Task } from "../models/task";
 
 const drawerWidth = 300;
 
@@ -116,13 +117,6 @@ export default function NavBar() {
   const [openNewTaskDialog, setOpenNewTaskDialog] = React.useState(false);
   const { user, generalTask, folders } = useFetchData();
 
-  // useEffect(()=>
-  // )
-
-  console.log("la data recibida", user);
-  console.log("la tasks gral", generalTask);
-  console.log("la tasks gral", folders);
-
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
   };
@@ -131,6 +125,7 @@ export default function NavBar() {
     setOpenDrawer(false);
   };
   const folderData = new Folder();
+  const taskData = new Task();
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -221,6 +216,9 @@ export default function NavBar() {
         onClose={() => setOpenNewFolderDialog(false)}
       />
       <TaskDialog
+        initialData={taskData}
+        user={user}
+        folder={0}
         open={openNewTaskDialog}
         onClose={() => setOpenNewTaskDialog(false)}
       />
@@ -251,16 +249,3 @@ export default function NavBar() {
     </div>
   );
 }
-
-const tareas = [
-  { id: 1, title: "una tarea", priority: "medium", checked: false },
-  { id: 2, title: "dps tarea", priority: "high", checked: false },
-  { id: 3, title: "tres tarea", priority: "low", checked: false },
-  { id: 4, title: "cuarta tarea", priority: "medium", checked: false },
-];
-
-const folders = {
-  id: "1",
-  name: "General",
-  tasks: tareas,
-};

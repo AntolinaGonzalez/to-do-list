@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -14,6 +14,9 @@ import {
   Select,
   Theme,
 } from "@material-ui/core";
+import { useTaskForm } from "../hooks/useTask";
+import { User } from "../models/user";
+import { Task } from "../models/task";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,18 +31,35 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
+  initialData: Task;
+  user: User;
+  folder?: number;
   open: boolean;
   onClose(): void;
 }
-const TaskDialog: React.FC<Props> = ({ open, onClose }) => {
-  const classes = useStyles();
+const TaskDialog: React.FC<Props> = ({
+  initialData,
+  user,
+  folder,
+  open,
+  onClose,
+}) => {
   const [state, setState] = React.useState<{
-    age: string | number;
+    priority: string;
     name: string;
   }>({
-    age: "",
-    name: "hai",
+    priority: initialData.priority,
+    name: "priority",
   });
+  const priorityLabel = state.priority;
+  const { register, formState, submitHandler } = useTaskForm({
+    initialData:{...initialData, priority: priorityLabel},
+    user,
+    folder,
+    handleClose: onClose,
+  });
+  const classes = useStyles();
+  
   const handleChange = (
     event: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
@@ -49,23 +69,29 @@ const TaskDialog: React.FC<Props> = ({ open, onClose }) => {
       [name]: event.target.value,
     });
   };
+  const { ref, ...rest } = register("title");
+  
   return (
-    <div>
-      <Dialog
-        open={open}
-        onClose={onClose}
-        aria-labelledby="form-dialog-title"
-        fullWidth
-      >
+    <Dialog
+      open={open}
+      onClose={onClose}
+      aria-labelledby="form-dialog-title"
+      fullWidth
+    >
+      <form onSubmit={submitHandler}>
         <DialogTitle id="form-dialog-title">New Task</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Describe your task to added to your to do list
           </DialogContentText>
           <TextField
+            required
             autoFocus
+            inputRef={ref}
+            {...rest}
             margin="dense"
-            id="name"
+            name="title"
+            id="title"
             label="Task's name"
             type="text"
             fullWidth
@@ -74,10 +100,10 @@ const TaskDialog: React.FC<Props> = ({ open, onClose }) => {
             <InputLabel htmlFor="age-native-simple">Priority</InputLabel>
             <Select
               native
-              value={state.age}
+              value={state.priority}
               onChange={handleChange}
               inputProps={{
-                name: "Priority",
+                name: "priority",
                 id: "Priority-label",
               }}
             >
@@ -92,10 +118,12 @@ const TaskDialog: React.FC<Props> = ({ open, onClose }) => {
           <Button color="primary" onClick={onClose}>
             Cancel
           </Button>
-          <Button color="primary">Confirm</Button>
+          <Button color="primary" type="submit">
+            Confirm
+          </Button>
         </DialogActions>
-      </Dialog>
-    </div>
+      </form>
+    </Dialog>
   );
 };
 

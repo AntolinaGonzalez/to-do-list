@@ -40,7 +40,6 @@ const FolderComponent: React.FC<Props> = ({ initialData, user }) => {
     setAnchorEl(null);
   };
 
-  console.log("esto llega", initialData);
   return (
     <>
       <Card className={classes.borderCard}>
@@ -55,13 +54,12 @@ const FolderComponent: React.FC<Props> = ({ initialData, user }) => {
         />
         <CardContent>
           {initialData.tasks &&
-            initialData.tasks.map(({ id, title, priority, checked }) => (
-              <Box key={id} m={1}>
+            initialData.tasks.map((t) => (
+              <Box key={t.id} m={1}>
                 <SimpleTask
-                  id={id}
-                  title={title}
-                  priority={priority}
-                  checked={checked}
+                  initialData={t}
+                  user={user}
+                  folder={initialData.id}
                 />
               </Box>
             ))}
@@ -125,10 +123,11 @@ const FolderComponent: React.FC<Props> = ({ initialData, user }) => {
         open={openDeleteDialog}
         onClose={() => setDeleteDialog(false)}
       />
-      <TaskDialog
+      {/* <TaskDialog
+      initialData
         open={openTaskDialog}
         onClose={() => setOpenTaskDialog(false)}
-      />
+      /> */}
     </>
   );
 };
