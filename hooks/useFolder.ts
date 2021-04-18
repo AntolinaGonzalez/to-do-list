@@ -30,25 +30,38 @@ export const useFolderForm = ({
     mode: "onBlur",
     resolver: yupResolver(schema),
   });
-  const onSubmit =  useCallback(async (data) => {
-    try {
-      console.log("holiss", initialData);
-      console.log("chaucito", data);
+  const onSubmit = useCallback(
+    async (data) => {
+      try {
+        console.log("holiss", initialData);
+        console.log("chaucito", data);
 
-      await axios.post(`${process.env.api}/folder`, {
-        ...data,
-        user: user.id,
-      });
-      mutate('/')
-      handleClose()
+        await axios.post(`${process.env.api}/folder`, {
+          ...data,
+          user: user.id,
+        });
+        mutate(`${process.env.api}/folders/11`);
+        handleClose();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [initialData, user]
+  );
+  const submitHandler = hookform.handleSubmit(onSubmit);
+
+  const onDelete = useCallback(async () => {
+    try {
+      await axios.delete(`${process.env.api}/folder/${initialData.id}`);
+      mutate(`${process.env.api}/folders/11`);
     } catch (e) {
       console.log(e);
     }
-  },[initialData,user])
-  const submitHandler = hookform.handleSubmit(onSubmit)
+  }, []);
   return {
     ...hookform,
     submitHandler,
     onSubmit,
+    onDelete,
   };
 };
