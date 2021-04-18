@@ -13,6 +13,7 @@ import DeleteDialog from "./deleteDialog";
 import TaskDialog from "./TaskDialog";
 import { Folder } from "../models/folder";
 import { User } from "../models/user";
+import { Task } from "../models/task";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,6 +40,7 @@ const FolderComponent: React.FC<Props> = ({ initialData, user }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const taskData = new Task();
 
   return (
     <>
@@ -123,11 +125,13 @@ const FolderComponent: React.FC<Props> = ({ initialData, user }) => {
         open={openDeleteDialog}
         onClose={() => setDeleteDialog(false)}
       />
-      {/* <TaskDialog
-      initialData
+      <TaskDialog
+        initialData={taskData}
+        user={user}
+        folder={initialData.id}
         open={openTaskDialog}
         onClose={() => setOpenTaskDialog(false)}
-      /> */}
+      />
     </>
   );
 };

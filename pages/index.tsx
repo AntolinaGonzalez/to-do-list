@@ -18,6 +18,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import {
   Box,
+  Button,
   Grid,
   ListItem,
   ListItemIcon,
@@ -169,7 +170,9 @@ export default function NavBar() {
               className={classes.logout}
               color="secondary"
             >
-              Log Out
+              <Button color="secondary" onClick={() => setOpenLogin(true)}>
+                Log Out
+              </Button>
             </Typography>
           </Box>
         </Box>
@@ -228,10 +231,10 @@ export default function NavBar() {
         })}
       >
         <div className={classes.drawerHeader} />
+        <Typography paragraph>To Do List APP</Typography>
         <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum
+          You can organice your rutine in a folder. If you do not have a folder
+          your task will be in 'General' Folder
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>

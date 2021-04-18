@@ -1,9 +1,6 @@
-import { Folder } from "./../models/folder";
 import { User } from "./../models/user";
 import { useCallback } from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import axios from "axios";
 import { mutate } from "swr";
 import { Task } from "../models/task";
@@ -41,7 +38,8 @@ export const useTaskForm = ({
           folder: folder,
         });
         handleClose();
-        mutate(`${process.env.api}/tasks/folder/0`)
+        mutate(`${process.env.api}/tasks/folder/0`);
+        mutate(`${process.env.api}/tasks/11`);
       } catch (e) {
         console.log(e);
       }
@@ -53,8 +51,9 @@ export const useTaskForm = ({
   const onDelete = useCallback(async () => {
     try {
       await axios.delete(`${process.env.api}/task/${initialData.id}`);
-      mutate(`${process.env.api}/tasks/folder/0`)
-      handleClose()
+      mutate(`${process.env.api}/tasks/folder/0`);
+      mutate(`${process.env.api}/tasks/11`);
+      handleClose();
     } catch (e) {
       console.log(e);
     }
