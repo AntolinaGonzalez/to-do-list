@@ -1,5 +1,5 @@
 import { User } from "./../models/user";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { mutate } from "swr";
@@ -21,12 +21,13 @@ export const useTaskForm = ({
   initialData: Task;
   user: User;
   folder: number;
-  handleClose: () => void;
+  handleClose?: () => void;
 }) => {
   const hookform = useForm<TaskValuesForm>({
     defaultValues: initialData,
     mode: "onBlur",
   });
+  const [checked, setChecked] = useState<string[]>([]);
 
   const onSubmit = useCallback(
     async (data) => {
@@ -47,6 +48,20 @@ export const useTaskForm = ({
     [initialData, user]
   );
   const submitHandler = hookform.handleSubmit(onSubmit);
+  const handleChangeChecked = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    try {
+      await axios.put(`${process.env.api}/task`, {
+        ...initialData,
+        checked: !initialData.checked,
+      });
+      mutate(`${process.env.api}/tasks/11`);
+      mutate(`${process.env.api}/tasks/folder/0`);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const onDelete = useCallback(async () => {
     try {
@@ -63,5 +78,6 @@ export const useTaskForm = ({
     submitHandler,
     onSubmit,
     onDelete,
+    handleChangeChecked,
   };
 };

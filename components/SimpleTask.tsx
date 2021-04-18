@@ -9,6 +9,7 @@ import TaskDialog from "./TaskDialog";
 import { Task } from "../models/task";
 import { User } from "../models/user";
 import DeleteTaskDialog from "./deleteTask";
+import { useTaskForm } from "../hooks/useTask";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,6 +31,7 @@ interface Props {
 }
 
 const SimpleTask: React.FC<Props> = ({ user, folder, initialData }) => {
+  const {handleChangeChecked} = useTaskForm({ initialData, user, folder });
   const classes = useStyles();
   const [state, setState] = React.useState({
     checkedA: true,
@@ -70,8 +72,8 @@ const SimpleTask: React.FC<Props> = ({ user, folder, initialData }) => {
             control={
               <Checkbox
                 checked={initialData.checked}
-                onChange={handleChange}
-                name="checkedB"
+                onChange={handleChangeChecked}
+                name={initialData.id.toString()}
                 color="primary"
               />
             }
