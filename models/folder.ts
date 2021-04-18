@@ -1,6 +1,6 @@
 import { Task } from "./task";
 export class Folder {
-  id: string;
+  id: number;
   name: string;
   tasks: Task[];
 }
