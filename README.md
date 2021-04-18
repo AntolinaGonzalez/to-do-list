@@ -2,7 +2,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies 
+yarn
+
+setup .env.local with you api url
+
+run the development server:
 
 ```bash
 npm run dev
@@ -17,6 +22,10 @@ To Do APP
 You can organise your things to do in a folder. If you do not have a folder your tasks will be in the 'General' Folder.
 
 Tecnologies:
-- Java Spring Boot API
-- SWR
-- React Form and hooks
+- React version 17.0.2
+- Next version 10.1.3
+- React Hook Form version 7.1.1
+- SWR Version 0.5.5
+- Axios for post and put http request
+- Fetch for get http Request
+
