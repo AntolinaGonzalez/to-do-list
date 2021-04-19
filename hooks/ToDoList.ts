@@ -24,6 +24,7 @@ export const useFetchData = () => {
     `${process.env.api}/tasks/folder/0`,
     fetcher
   );
+  
   return {
     user: data,
     generalTask: {
@@ -32,5 +33,6 @@ export const useFetchData = () => {
       tasks: generalTask,
     },
     folders: FolderTasks,
+    loading: !!!generalTask
   };
 };

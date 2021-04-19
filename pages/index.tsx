@@ -33,6 +33,7 @@ import TaskDialog from "../components/TaskDialog";
 import Login from "../components/Login";
 import { useFetchData } from "../hooks/ToDoList";
 import { Task } from "../models/task";
+import CircularIndeterminate from "../components/loader";
 
 const drawerWidth = 300;
 
@@ -116,8 +117,9 @@ export default function NavBar() {
   const [open, setOpenDrawer] = React.useState(true);
   const [openNewFolderDialog, setOpenNewFolderDialog] = React.useState(false);
   const [openNewTaskDialog, setOpenNewTaskDialog] = React.useState(false);
-  const { user, generalTask, folders } = useFetchData();
+  const { user, generalTask, folders, loading } = useFetchData();
 
+  
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
   };
@@ -127,6 +129,9 @@ export default function NavBar() {
   };
   const folderData = new Folder();
   const taskData = new Task();
+  if (loading) {
+    return <CircularIndeterminate />;
+  }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -233,8 +238,8 @@ export default function NavBar() {
         <div className={classes.drawerHeader} />
         <Typography paragraph>To Do List APP</Typography>
         <Typography paragraph>
-          You can organise your things to do in a folder. If you do not have a folder
-          your tasks will be in the 'General' Folder.
+          You can organise your things to do in a folder. If you do not have a
+          folder your tasks will be in the 'General' Folder.
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
