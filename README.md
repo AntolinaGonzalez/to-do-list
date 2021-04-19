@@ -17,6 +17,8 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+Link to deploying application: https://to-do-list-ten-alpha.vercel.app/ 
+
 To Do APP 
 
 You can organise your things to do in a folder. If you do not have a folder your tasks will be in the 'General' Folder.
